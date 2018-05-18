@@ -2,6 +2,7 @@ require_relative 'tagged_with_query'
 
 module ActsAsTaggableOn::Taggable
   module Core
+
     def self.included(base)
       base.extend ActsAsTaggableOn::Taggable::Core::ClassMethods
 
@@ -41,6 +42,7 @@ module ActsAsTaggableOn::Taggable
           end
 
           taggable_mixin.class_eval <<-RUBY, __FILE__, __LINE__ + 1
+
             def #{tag_type}_list
               tag_list_on('#{tags_type}')
             end
@@ -49,6 +51,7 @@ module ActsAsTaggableOn::Taggable
               parsed_new_list = ActsAsTaggableOn.default_parser.new(new_tags).parse
 
               if self.class.preserve_tag_order? || parsed_new_list.sort != #{tag_type}_list.sort
+                #{tag_type}_list_will_change!
                 write_attribute("#{tag_type}_list", parsed_new_list)
               end
 

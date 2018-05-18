@@ -17,6 +17,12 @@ describe 'Dirty behavior of taggable objects' do
         expect(@taggable.changes).to eq({'tag_list' => [['awesome', 'epic'], ['one']]})
       end
 
+      it 'should show changes of freshly initialized dirty object' do
+        taggable = TaggableModel.find(@taggable.id)
+        taggable.tag_list = 'one'
+        expect(taggable.changes).to eq({'tag_list' => [['awesome', 'epic'], ['one']]})
+      end
+
       if Rails.version >= "5.1"
         it 'flags tag_list as changed' do
           expect(@taggable.will_save_change_to_tag_list?).to be_truthy
